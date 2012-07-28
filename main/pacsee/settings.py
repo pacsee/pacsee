@@ -123,7 +123,7 @@ FILEBROWSER_URL_FILEBROWSER_MEDIA = STATIC_URL + "filebrowser/"
 
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '9p(i7_=_=*2ya)ns(=7@s#lb@kh2wx980oxt3vp2%ej0&amp;9_q&amp;='
+SECRET_KEY = '* * * * * M Y  R E A L L Y  S E C R E T  K E Y * * * * * *'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
