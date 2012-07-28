@@ -58,10 +58,15 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
+
+DATETIME_FORMAT="Y. F j. l H:i"
+SHORT_DATE_FORMAT="Y-m-d"
+DATE_FORMAT = "Y. F j. l"
+
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 USE_X_FORWARDED_HOST = True
 PREPEND_WWW = True
@@ -86,11 +91,6 @@ MEDIA_ROOT = os.path.join(WWW_ROOT, "media/")
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, "uploads")
-FILEBROWSER_DIRECTORY = 'uploads/'
-
-FILEBROWSER_MAX_UPLOAD_SIZE = 10485760
-FILEBROWSER_DEFAULT_PERMISSIONS = 0775
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -115,7 +115,11 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
+CKEDITOR_UPLOAD_PATH = os.path.join(MEDIA_ROOT, "uploads")
+FILEBROWSER_DIRECTORY = 'uploads/'
+FILEBROWSER_MAX_UPLOAD_SIZE = 10485760
+FILEBROWSER_DEFAULT_PERMISSIONS = 0775
+FILEBROWSER_URL_FILEBROWSER_MEDIA = STATIC_URL + "filebrowser/"
 
 
 # Make this unique, and don't share it with anybody.
@@ -133,17 +137,20 @@ LOCALE_PATHS = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'xadrpy.auth.backends.EmailBackend',    
+    'xadrpy.access.backends.EmailBackend',    
 )
 
 
 MIDDLEWARE_CLASSES = (
+    'xadrpy.router.middleware.RouterMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'xadrpy.i18n.middleware.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'xadrpy.access.middleware.AccessMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'xadrpy.contrib.themes.middleware.ThemeMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -176,6 +183,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.comments',    
     'grappelli.dashboard',
     'grappelli',
     'filebrowser',
@@ -188,14 +196,19 @@ INSTALLED_APPS = (
     'imagekit',
 
     'xadrpy.vendor.extjs',
-    'xadrpy.auth',
+    'xadrpy.access',
     'xadrpy.api',
     'xadrpy.templates',
     
     'xadrpy.router',
     'xadrpy.contrib.pages',
-    'xadrpy.contrib.html',
+    'xadrpy.contrib.blog',
+    'xadrpy.contrib.feedback',
+    'xadrpy.contrib.themes',
+    'xadrpy.social.facebook',
 )
+
+COMMENTS_APP = 'xadrpy.contrib.feedback'
 
 GRAPPELLI_ADMIN_TITLE = "Pacsee"
 GRAPPELLI_INDEX_DASHBOARD = {
@@ -215,33 +228,38 @@ ROSETTA_MESSAGES_SOURCE_LANGUAGE_NAME = "English"
 
 ROSETTA_WSGI_AUTO_RELOAD = False
 
-PAGES_DEFAULT_TEMPLATE = "main.html"
-
-PAGES_TEMPLATES = (
-    ('main.html', gettext("Main template")),
+PREFERENCES = (
+    {'key': 'page_title', 'value': u'Pacsee blog', 'vtype': 'str' },
+    {'key': 'meta_title', 'value': u'Pacsee blog', 'vtype': 'str' },
+    {"key":"comments_enabled", "namespace":"x-blog", "value": False, "debug": True },
 )
+
+#PAGES_DEFAULT_TEMPLATE = "main.html"
+#
+#PAGES_TEMPLATES = (
+#    ('main.html', gettext("Main template")),
+#)
 
 
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': [
-            [      'Undo', 'Redo',
-              '-', 'Bold', 'Italic', 'Underline','Strike',
-              '-', 'Subscript','Superscript',
-              '-', 'Link', 'Unlink', 'Anchor',
-              '-', 'Maximize',
-            ],
-            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-            [      'HorizontalRule',
-              '-', 'Table',
-              '-', 'BulletedList', 'NumberedList',
-              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
-              '-', 'SpecialChar',
-              '-', 'Source',
-              '-', 'About',
-            ]
+            { 'name': 'document', 'items' : [ 'Source','-','Save','NewPage','Preview','Print','-','Templates' ] },
+            { 'name': 'clipboard', 'items' : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+            { 'name': 'editing', 'items' : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+            { 'name': 'forms', 'items' : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+            '/',
+            { 'name': 'basicstyles', 'items' : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+            { 'name': 'paragraph', 'items' : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
+            '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+            { 'name': 'links', 'items' : [ 'Link','Unlink','Anchor' ] },
+            { 'name': 'insert', 'items' : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ] },
+            '/',
+            { 'name': 'styles', 'items' : [ 'Styles','Format','Font','FontSize' ] },
+            { 'name': 'colors', 'items' : [ 'TextColor','BGColor' ] },
+            { 'name': 'tools', 'items' : [ 'Maximize', 'ShowBlocks','-','About' ] },
         ],
-        'width': 600,
+        'width': 800,
         'height': 300,
         'disableNativeSpellChecker': True,
         'scayt_autoStartup': False,
@@ -252,6 +270,18 @@ CKEDITOR_CONFIGS = {
         'resize_enabled': False,
         'language': 'hu',
         'toolbarCanCollapse': False,
+        'emailProtection': 'encode',
+        'forcePasteAsPlainText': True,
+        'ignoreEmptyParagraph': True,
+        
+        'stylesSet': [
+              { 'name' : 'H2', 'element' : 'h2' },
+              { 'name' : 'H3', 'element' : 'h3' },
+              { 'name' : 'H4', 'element' : 'h4' },
+              { 'name' : 'Normal', 'element' : 'p' },
+              { 'name' : 'Strong Emphasis', 'element' : 'strong' },
+              { 'name' : 'Emphasis', 'element' : 'em' },
+        ],
     }
 }
 

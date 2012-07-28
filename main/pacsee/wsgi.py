@@ -30,7 +30,7 @@ sys.path.append(os.path.join(SOLUTION_PATH, 'vendor'))
 class Silent:                                                                                                                                                                                                                                         
     def write(self, line): pass                                                                                                                                                                                                                       
                                                                                                                                                                                                                                                       
-sys.stdout = Silent()
+#sys.stdout = Silent()
 
 os.umask(0022)
 # This application object is used by any WSGI server configured to use this

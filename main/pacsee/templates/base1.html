@@ -1,0 +1,64 @@
+{% extends request.theme.get_base_html %}
+
+{% load pages_tags prefs %}
+
+{% block meta-title %}{% prefs key='meta_title' %}{% endblock %}
+{% block extrahead %}
+<meta name="google-site-verification" content="SSzudDORh3Ztl0bKyGhYEmOuLLWk5N0DQS-3Xhwlhrc" />
+{% endblock %}
+
+{% block h1 %}<a href="/">{% prefs key='page_title' %}</a>{% endblock %}
+{% block mainmenu %}{% plugin 'x-hmenu' 'header' %}{% endblock %}
+
+{% block sidebar %}
+<ul>
+<li>{% plugin 'x-last_entries' 'sidebar' %}</li>
+<li>{% plugin 'x-facebook_activity' 'sidebar' width=280 %}</li>
+<li></li>
+</ul>
+{% endblock %}
+
+{% block endhead %}
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33688748-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+{% endblock %}
+
+{% block bodybegin %}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/hu_HU/all.js#xfbml=1&appId=127839833982848";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{% endblock %}
+
+{% block header %}
+<div class="head"><h1>{% prefs key='page_title' %}</h1></div>
+<div class="wallpaper">
+</div>
+<div class="nav">
+{% plugin 'x-hmenu' 'header' %}
+<div class="clear"></div>
+</div>
+{% endblock %}
+
+{% block main %}
+	<div id="content">{% block content %}{% endblock %}</div>
+	<div id="left">{% block left %}{% endblock %}</div>
+	<div id="right">{% block right %}
+		{% plugin 'x-menu' 'rightmenu' %}
+	{% endblock %}</div>
+{% endblock %}

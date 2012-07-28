@@ -1,0 +1,24 @@
+{% load url from future %}
+{% load xtemplates %}
+<ul>
+	<li>
+		<h2>pacsee.hu</h2>
+		<p>Kiváncsi vagy mit gondolok, kiváncsi vagy, milyen filmet néztem meg, kiváncsi vagy a világról alkotott képemre? Nagyon jó helyen jársz, ide ezt mind-mind leírom.</p>
+	</li>
+	<li>
+		<h2>Kategóriák</h2>
+		{% plugin 'x-blog-categories' 'sidebar' %}
+	</li>
+	<li>
+		<h2>Amit olvasni szoktam</h2>
+		<ul>
+			<li><a href="http://www.index.hu/" target="_blank">index.hu</a></li>
+			<li><a href="http://weblabor.hu/" target="_blank">Weblabor - A fejlesztői forrás</a></li>
+			<li><a href="http://www.djangoproject.com/" target="_blank">Django projekt hivatalos oldala</a></li>
+		</ul>
+	</li>
+	<li>
+		<h2>Archívum</h2>
+		{% plugin 'x-blog-latest_entries' 'sidebar' %}
+	</li>
+</ul>

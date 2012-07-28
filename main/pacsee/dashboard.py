@@ -5,6 +5,7 @@ from grappelli.dashboard import modules, Dashboard
 from grappelli.dashboard.utils import get_admin_site_name
 
 
+
 class CustomIndexDashboard(Dashboard):
     """
     Custom index dashboard for www.
