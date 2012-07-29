@@ -15,7 +15,7 @@ sys.path.append(os.path.join(SOLUTION_PATH,"applications"))
 sys.path.append(os.path.join(SOLUTION_PATH,"vendor")) 
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('pacsee.hu', 'admin@pacsee.hu'),
 )
 
 MANAGERS = ADMINS
