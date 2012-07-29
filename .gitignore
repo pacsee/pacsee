@@ -12,3 +12,4 @@
 /public/static
 /public/media
 settings_local.py
+wsgi_local.py

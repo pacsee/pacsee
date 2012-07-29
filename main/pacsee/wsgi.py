@@ -30,9 +30,14 @@ sys.path.append(os.path.join(SOLUTION_PATH, 'vendor'))
 class Silent:                                                                                                                                                                                                                                         
     def write(self, line): pass                                                                                                                                                                                                                       
                                                                                                                                                                                                                                                       
-#sys.stdout = Silent()
+sys.stdout = Silent()
 
-os.umask(0022)
+os.umask(0002)
+
+try:
+    from wsgi_local import * #@UnusedWildImport
+except ImportError:
+    pass
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
