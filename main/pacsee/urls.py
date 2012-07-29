@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     (r'^test/$', 'pacsee.views.test'),    
     
 )
-urlpatterns+=xadrpy.router.urls.urlpatterns
+urlpatterns+=xadrpy.router.urls.get_urlpatterns()
 
 if settings.DEBUG:
     urlpatterns += patterns('',
