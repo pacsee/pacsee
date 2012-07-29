@@ -142,6 +142,7 @@ AUTHENTICATION_BACKENDS = (
 
 
 MIDDLEWARE_CLASSES = (
+    'pacsee.middleware.FixRedirectMiddleware',
     'xadrpy.router.middleware.RouterMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'xadrpy.i18n.middleware.LocaleMiddleware',
