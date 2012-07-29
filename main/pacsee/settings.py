@@ -261,7 +261,7 @@ CKEDITOR_CONFIGS = {
         ],
         'width': 800,
         'height': 300,
-        'disableNativeSpellChecker': True,
+        'disableNativeSpellChecker': False,
         'scayt_autoStartup': False,
         'entities' : False,
         'startupOutlineBlocks': True,
@@ -269,11 +269,12 @@ CKEDITOR_CONFIGS = {
         'format_tags': "h2;h3;p",
         'resize_enabled': False,
         'language': 'hu',
+        'contentsLanguage': 'hu',
         'toolbarCanCollapse': False,
         'emailProtection': 'encode',
         'forcePasteAsPlainText': True,
         'ignoreEmptyParagraph': True,
-        
+        'browserContextMenuOnCtrl': True, 
         'stylesSet': [
               { 'name' : 'H2', 'element' : 'h2' },
               { 'name' : 'H3', 'element' : 'h3' },
