@@ -1,0 +1,24 @@
+{% extends request.theme.template.entry_list %}
+{% block entry-list-header %}
+<h2>{{ category }}</h2>
+{% endblock %}
+
+{% block entry-list-footer %}
+<div class="pagination">
+    <span class="step-links">
+        {% if entries.has_previous %}
+            <a href="{{ stub }}{{ entries.previous_page_number }}/">Újabb bejegyzések</a>
+        {% else %}
+        	<span>Újabb bejegyzések</span>
+        {% endif %}
+
+        <span class="current"><strong>{{ entries.number }} / {{ entries.paginator.num_pages }}.</strong></span>
+
+        {% if entries.has_next %}
+            <a href="{{ stub }}{{ entries.next_page_number }}/">Régebbi bejegyzések</a>
+        {% else %}
+        	<span>Régebbi bejegyzések</span>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
